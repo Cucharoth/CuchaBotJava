@@ -2,6 +2,7 @@ package Main.Commands;
 
 import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.guild.GuildReadyEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -49,15 +50,15 @@ public class BotCommands extends ListenerAdapter {
     }
 
     //global
-    /*@Override
+    @Override
     public void onReady(@NotNull ReadyEvent event) {
         List<CommandData> commandData = new ArrayList<>();
         //add commands
-        commandData.add(Commands.slash("honkai_rotation", "Honkai current patch rotation"));
+        //commandData.add(Commands.slash("honkai_rotation", "Honkai current patch rotation"));
 
         //update them
         event.getJDA().updateCommands().addCommands(commandData).queue();
-    }*/
+    }
 
     /*@Override
     public void onGuildJoin(@NotNull GuildJoinEvent event) {
