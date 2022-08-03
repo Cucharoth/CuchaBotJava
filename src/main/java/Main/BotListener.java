@@ -25,6 +25,7 @@ public class BotListener extends ListenerAdapter {
     private void takoTuesday(MessageReceivedEvent event){
         String messageSend = event.getMessage().getContentRaw().toLowerCase(Locale.ROOT);
         messageSend = stripDiacritics(messageSend);
+        messageSend = messageSend.replaceAll("\\s", "");
         if(messageSend.contains("martes") || messageSend.contains("tuesday")){
             event.getTextChannel().sendMessage("https://i.imgur.com/kf7WnWY.png").queue();
         }
