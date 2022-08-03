@@ -54,7 +54,7 @@ public class BotCommands extends ListenerAdapter {
     public void onReady(@NotNull ReadyEvent event) {
         List<CommandData> commandData = new ArrayList<>();
         //add commands
-        //commandData.add(Commands.slash("honkai_rotation", "Honkai current patch rotation"));
+        //commandData.add(Commands.slash("honkai_rotation_test", "Honkai current patch rotation"));
 
         //update them
         event.getJDA().updateCommands().addCommands(commandData).queue();
