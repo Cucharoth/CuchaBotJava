@@ -34,6 +34,7 @@ public class BotListener extends ListenerAdapter {
     private void takoJueves(MessageReceivedEvent event){
         String messageSend = event.getMessage().getContentRaw().toLowerCase(Locale.ROOT);
         messageSend = stripDiacritics(messageSend);
+        messageSend = messageSend.replaceAll("\\s", "");
         if(messageSend.contains("jueves") || messageSend.contains("thursday")){
             Calendar cal = Calendar.getInstance();
             Date date = new Date();
