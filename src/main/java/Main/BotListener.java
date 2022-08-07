@@ -1,9 +1,15 @@
 package Main;
 
+import Main.Commands.Fauna.IMissFauna;
+import net.dv8tion.jda.api.MessageBuilder;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.interactions.components.ActionRow;
+import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
 import java.text.Normalizer;
 import java.util.Calendar;
 import java.util.Date;
@@ -19,6 +25,34 @@ public class BotListener extends ListenerAdapter {
             //add actions
             takoTuesday(event);
             takoJueves(event);
+            faunaWhen(event);
+        }
+    }
+
+    private void faunaWhen(MessageReceivedEvent event){
+        String messageSend = event.getMessage().getContentRaw().toLowerCase(Locale.ROOT);
+        messageSend = stripDiacritics(messageSend);
+        messageSend = messageSend.replaceAll("\\s", "");
+        if(messageSend.contains("faunawhen")){
+            IMissFauna fauwuna = null;
+            Button faunaRandomStream = Button.primary("faunaRandomStream", "Random Stream");
+            try {
+                fauwuna = new IMissFauna();
+                String message = "";
+                if (fauwuna.isCurrentStream()) {
+                    message = "Current Streamerino: " + fauwuna.getStream() + "\n" + "Countdown: " + fauwuna.getCountDown() + "\n" + fauwuna.getImageURL();
+                }else{
+                    message = "Nexto Stream: " + fauwuna.getStream() + "\n" + "Countdown: " + fauwuna.getCountDown();
+                }
+                Message messageBuilder = new MessageBuilder()
+                        .append(message)
+                        .setActionRows(
+                                ActionRow.of(faunaRandomStream)
+                        ).build();
+                event.getTextChannel().sendMessage(messageBuilder).queue();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

@@ -1,4 +1,4 @@
-package Main.Patchs;
+package Main.Commands.Patchs;
 
 import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.entities.Message;
