@@ -29,11 +29,16 @@ public class IMissFauna {
         }
 
         Elements countDownClass = fauwuna.getElementsByClass("Home_countdown__UZM9_");
-        this.countDown = countDownClass.text();
-
-        Element image = fauwuna.select("img").first();
-        assert image != null;
-        this.imageURL = image.attr("src");
+        if(!countDownClass.text().equalsIgnoreCase("")) {
+            this.countDown = countDownClass.text();
+            Element image = fauwuna.select("img").first();
+            assert image != null;
+            this.imageURL = image.attr("src");
+        }else{
+            Elements image = fauwuna.select("img");
+            this.imageURL = image.get(1).attr("src");
+            this.currentStream = true;
+        }
     }
 
     public IMissFauna(int i) throws IOException {
@@ -56,7 +61,6 @@ public class IMissFauna {
     public String getImageURL() {
         return imageURL;
     }
-
 
     public boolean isCurrentStream() {
         return currentStream;

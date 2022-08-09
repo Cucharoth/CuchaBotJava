@@ -44,9 +44,9 @@ public class BotCommands extends ListenerAdapter {
             assert fauwuna != null;
             String message = "";
             if (fauwuna.isCurrentStream()) {
-                message = "Current Streamerino: " + fauwuna.getStream() + "\n" + "Countdown: " + fauwuna.getCountDown() + "\n" + fauwuna.getImageURL();
+                message = "She's live!! >:O" + "\n" + "Current Streamerino: " + fauwuna.getStream() + "\n" + fauwuna.getImageURL();
             }else{
-                message = "Nexto Stream: " + fauwuna.getStream() + "\n" + "Countdown: " + fauwuna.getCountDown();
+                message = "Nexto Stream: " + fauwuna.getStream() + "\n" + "Countdown: " + fauwuna.getCountDown() + "\n" + fauwuna.getImageURL();
             }
             Message messageBuilder = new MessageBuilder()
                     .append(message)
