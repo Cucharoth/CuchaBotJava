@@ -1,5 +1,8 @@
 package Main.Commands.Fauna;
 
+import com.gargoylesoftware.htmlunit.BrowserVersion;
+import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -15,9 +18,24 @@ public class IMissFauna {
 
 
     public IMissFauna() throws IOException {
-        Document fauwuna = Jsoup.connect("https://imissfauna.com")
+        String url = "https://imissfauna.com";
+        WebClient webClient = new WebClient(BrowserVersion.CHROME);
+        webClient.getOptions().setJavaScriptEnabled(true);//Enable the JS interpreter, the default is true
+        webClient.getOptions().setCssEnabled(false);//disable css support
+        webClient.getOptions().setThrowExceptionOnScriptError(false);//Whether to throw an exception when js runs incorrectly
+        webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);
+        webClient.getOptions().setTimeout(5 * 1000);//Set connection timeout
+        HtmlPage page = webClient.getPage(url);
+        webClient.waitForBackgroundJavaScript(5 * 1000);//wait for js background execution for 30 seconds
+
+        String pageAsXml = page.asXml();
+
+        //Jsoup analysis processing
+        Document fauwuna = Jsoup.parse(pageAsXml, "https://imissfauna.com");
+
+        /*Document fauwuna = Jsoup.connect("https://imissfauna.com")
                 .userAgent("Mozilla")
-                .get();
+                .get();*/
 
         Elements currentStreamTag = fauwuna.getElementsByTag("b");
         if (!currentStreamTag.text().equalsIgnoreCase("")){
@@ -28,9 +46,9 @@ public class IMissFauna {
             this.stream = nextStreamRef.attr("href");
         }
 
-        Elements countDownClass = fauwuna.getElementsByClass("Home_countdown__UZM9_");
+        Elements countDownClass = fauwuna.getElementsByTag("a");
         if(!countDownClass.text().equalsIgnoreCase("")) {
-            this.countDown = countDownClass.text();
+            this.countDown = countDownClass.get(0).text();
             Element image = fauwuna.select("img").first();
             assert image != null;
             this.imageURL = image.attr("src");

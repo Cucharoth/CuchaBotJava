@@ -34,6 +34,7 @@ public class BotCommands extends ListenerAdapter {
 
     private void faunaDoko(SlashCommandInteractionEvent event) {
         if(event.getName().equalsIgnoreCase("faunadoko")){
+            event.deferReply().setEphemeral(true).queue();
             IMissFauna fauwuna = null;
             Button faunaRandomStream = Button.primary("faunaRandomStream", "Random Stream");
             try {
@@ -53,7 +54,6 @@ public class BotCommands extends ListenerAdapter {
                     .setActionRows(
                             ActionRow.of(faunaRandomStream)
                     ).build();
-            event.deferReply().setEphemeral(true).queue();
             event.getHook().sendMessage(messageBuilder).queue();
         }
     }
