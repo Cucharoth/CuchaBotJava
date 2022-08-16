@@ -1,7 +1,9 @@
 package Main;
 
-import Main.Commands.Fauna.IMissFauna;
+import Main.StreamWhen.IMissFauna;
+import Main.StreamWhen.IMissIna;
 import net.dv8tion.jda.api.MessageBuilder;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -26,23 +28,66 @@ public class BotListener extends ListenerAdapter {
             takoTuesday(event);
             takoJueves(event);
             faunaWhen(event);
+            inaWhen(event);
         }
     }
+
+    private void inaWhen(MessageReceivedEvent event){
+        String messageSend = event.getMessage().getContentRaw().toLowerCase(Locale.ROOT);
+        messageSend = stripDiacritics(messageSend);
+        messageSend = messageSend.replaceAll("\\s", "");
+        if(messageSend.contains("inawhen")){
+            event.getTextChannel().sendMessage("Uno momento.. Finding Ina..").queue();
+            IMissIna Inya = null;
+            //Button inaRandomStream = Button.success("inaRandomStream", "Random Ina Stream");
+            try {
+                Inya = new IMissIna();
+                String message = "";
+                if (!Inya.getImageURL().equalsIgnoreCase("") && !Inya.getStream().equalsIgnoreCase("")) {  //htmlChangeCheck
+                    if (Inya.isCurrentStream()) {
+                        message = "She's live!! >:O" + "\n" + "Current Streamerino: " + Inya.getStream() + "\n" + Inya.getImageURL();
+                    } else {
+                        message = "Nexto Stream: " + Inya.getStream() + "\n" + "Countdown: " + Inya.getCountDown() + "\n" + Inya.getImageURL();
+                    }
+                }else{
+                    Member cucharoth = event.getGuild().getOwner();
+                    assert cucharoth != null;
+                    message = "Por la cuchachucha " + cucharoth.getAsMention() + " \nThey changed the coderino aganeeee!!!11 REEEEE!!";
+                }
+                Message messageBuilder = new MessageBuilder()
+                        .append(message)
+                        .setActionRows(
+                                //ActionRow.of(faunaRandomStream)
+                        ).build();
+                event.getTextChannel().sendMessage(messageBuilder).queue();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 
     private void faunaWhen(MessageReceivedEvent event){
         String messageSend = event.getMessage().getContentRaw().toLowerCase(Locale.ROOT);
         messageSend = stripDiacritics(messageSend);
         messageSend = messageSend.replaceAll("\\s", "");
         if(messageSend.contains("faunawhen")){
+            event.getTextChannel().sendMessage("Uno momento.. Finding Fauna..").queue();
             IMissFauna fauwuna = null;
-            Button faunaRandomStream = Button.primary("faunaRandomStream", "Random Stream");
+            Button faunaRandomStream = Button.success("faunaRandomStream", "Random Fauwuna Stream");
             try {
                 fauwuna = new IMissFauna();
                 String message = "";
-                if (fauwuna.isCurrentStream()) {
-                    message = "She's live!! >:O" + "\n" + "Current Streamerino: " + fauwuna.getStream() + "\n" + fauwuna.getImageURL();
+                if (!fauwuna.getImageURL().equalsIgnoreCase("") && !fauwuna.getStream().equalsIgnoreCase("")) {  //htmlChangeCheck
+                    if (fauwuna.isCurrentStream()) {
+                        message = "She's live!! >:O" + "\n" + "Current Streamerino: " + fauwuna.getStream() + "\n" + fauwuna.getImageURL();
+                    } else {
+                        message = "Nexto Stream: " + fauwuna.getStream() + "\n" + "Countdown: " + fauwuna.getCountDown() + "\n" + fauwuna.getImageURL();
+                    }
                 }else{
-                    message = "Nexto Stream: " + fauwuna.getStream() + "\n" + "Countdown: " + fauwuna.getCountDown() + "\n" + fauwuna.getImageURL();
+                    Member cucharoth = event.getGuild().getOwner();
+                    assert cucharoth != null;
+                    message = "Por la cuchachucha " + cucharoth.getAsMention() + " \nThey fking change it aganeeee!!!11 REEEEE!!";
                 }
                 Message messageBuilder = new MessageBuilder()
                         .append(message)

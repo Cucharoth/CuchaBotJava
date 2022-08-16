@@ -1,8 +1,6 @@
 package Main;
 
-import Main.Commands.Fauna.IMissFauna;
-import net.dv8tion.jda.api.MessageBuilder;
-import net.dv8tion.jda.api.entities.Message;
+import Main.StreamWhen.IMissFauna;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.guild.GuildReadyEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -11,8 +9,6 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
-import net.dv8tion.jda.api.interactions.components.ActionRow;
-import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -27,7 +23,7 @@ public class BotCommands extends ListenerAdapter {
     @Override
     public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
         //add comands on interaction
-        honkaiRotation(event);
+        patchRotation.honkaiRotation(event);
         patchRotation.honkaiOldPatchRotation(event);
         faunaDoko(event);
     }
@@ -36,34 +32,13 @@ public class BotCommands extends ListenerAdapter {
         if(event.getName().equalsIgnoreCase("faunadoko")){
             event.deferReply().setEphemeral(true).queue();
             IMissFauna fauwuna = null;
-            Button faunaRandomStream = Button.primary("faunaRandomStream", "Random Stream");
             try {
                 fauwuna = new IMissFauna();
+                fauwuna.faunaDoko(event);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            assert fauwuna != null;
-            String message = "";
-            if (fauwuna.isCurrentStream()) {
-                message = "She's live!! >:O" + "\n" + "Current Streamerino: " + fauwuna.getStream() + "\n" + fauwuna.getImageURL();
-            }else{
-                message = "Nexto Stream: " + fauwuna.getStream() + "\n" + "Countdown: " + fauwuna.getCountDown() + "\n" + fauwuna.getImageURL();
-            }
-            Message messageBuilder = new MessageBuilder()
-                    .append(message)
-                    .setActionRows(
-                            ActionRow.of(faunaRandomStream)
-                    ).build();
-            event.getHook().sendMessage(messageBuilder).queue();
         }
-    }
-
-    private void honkaiRotation(SlashCommandInteractionEvent event) {
-        if(event.getName().equalsIgnoreCase("honkai_current_rotation")){
-            event.reply("https://i.imgur.com/hiT8kvW.jpg" + "\n" + "https://i.imgur.com/aI38iPy.png" + "\n" +
-                    "Patch 5.8 (Painto girl)").setEphemeral(true).queue();
-        }
-
     }
 
     //onGuild

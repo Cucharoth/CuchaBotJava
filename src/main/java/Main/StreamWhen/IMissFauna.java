@@ -1,8 +1,14 @@
-package Main.Commands.Fauna;
+package Main.StreamWhen;
 
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import net.dv8tion.jda.api.MessageBuilder;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.components.ActionRow;
+import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -13,8 +19,9 @@ import java.io.IOException;
 public class IMissFauna {
     private String stream;
     private String countDown;
-    private String imageURL;
+    private String imageURL = "";
     private boolean currentStream = false;
+    private boolean changeAlert = false;
 
 
     public IMissFauna() throws IOException {
@@ -33,6 +40,7 @@ public class IMissFauna {
         //Jsoup analysis processing
         Document fauwuna = Jsoup.parse(pageAsXml, "https://imissfauna.com");
 
+        //old Jsoup
         /*Document fauwuna = Jsoup.connect("https://imissfauna.com")
                 .userAgent("Mozilla")
                 .get();*/
@@ -56,6 +64,7 @@ public class IMissFauna {
             Elements image = fauwuna.select("img");
             this.imageURL = image.get(1).attr("src");
             this.currentStream = true;
+
         }
     }
 
@@ -66,6 +75,30 @@ public class IMissFauna {
         Element randomStreamRef = fauwuna.select("a[href]").first();
         assert randomStreamRef != null;
         this.stream = randomStreamRef.attr("href");
+    }
+
+    public void faunaDoko(SlashCommandInteractionEvent event) {
+        if(event.getName().equalsIgnoreCase("faunadoko")){
+            Button faunaRandomStream = Button.primary("faunaRandomStream", "Random Stream");
+            String message = "";
+            if (!this.imageURL.equalsIgnoreCase("") && !this.stream.equalsIgnoreCase("")) {
+                if (this.currentStream) {
+                    message = "She's live!! >:O" + "\n" + "Current Streamerino: " + this.stream + "\n" + this.imageURL;
+                }else{
+                    message = "Nexto Stream: " + this.stream + "\n" + "Countdown: " + this.countDown + "\n" + this.imageURL;
+                }
+            }else{
+                Member cucharoth = event.getGuild().getOwner();
+                assert cucharoth != null;
+                message = "Por la cuchachucha " + cucharoth.getAsMention() + " \nThey changed the coderino aganeeee!!!11 REEEEE!!";
+            }
+            Message messageBuilder = new MessageBuilder()
+                    .append(message)
+                    .setActionRows(
+                            ActionRow.of(faunaRandomStream)
+                    ).build();
+            event.getHook().sendMessage(messageBuilder).queue();
+        }
     }
 
     public String getStream() {
