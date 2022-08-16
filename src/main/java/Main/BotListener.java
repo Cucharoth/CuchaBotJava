@@ -1,5 +1,6 @@
 package Main;
 
+import Main.Commands.Patchs.PatchRotation;
 import Main.StreamWhen.IMissFauna;
 import Main.StreamWhen.IMissIna;
 import net.dv8tion.jda.api.MessageBuilder;
@@ -14,6 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 import java.text.Normalizer;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Locale;
 import java.util.regex.Pattern;
@@ -29,6 +31,17 @@ public class BotListener extends ListenerAdapter {
             takoJueves(event);
             faunaWhen(event);
             inaWhen(event);
+            honkaiPatch(event);
+        }
+    }
+
+    private void honkaiPatch(MessageReceivedEvent event) {
+        String messageSend = event.getMessage().getContentRaw().toLowerCase(Locale.ROOT);
+        messageSend = stripDiacritics(messageSend);
+        messageSend = messageSend.replaceAll("\\s", "");
+        if(messageSend.contains("honkaipatch")){
+            PatchRotation currentpatch = new PatchRotation();
+            currentpatch.honkaiPatchListener(event);
         }
     }
 

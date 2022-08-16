@@ -4,6 +4,7 @@ import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 
@@ -18,13 +19,18 @@ import java.util.HashMap;
 
 public class PatchRotation {
     private HashMap<String, String> patchs = new HashMap<>();
-    public PatchRotation(){
+    public PatchRotation(){     //gacha                              //rotation
         this.patchs.put("5.4", "https://imgur.com/u7kzegM" + "\n" + "https://imgur.com/jnPCsOA" + "\n" + "Anee-Bronya");
         this.patchs.put("5.5", "https://imgur.com/FuPIbbf" + "\n" + "https://imgur.com/mc0eX8w" + "\n" + "PE");
         this.patchs.put("5.6", "https://imgur.com/10xAOQK" + "\n" + "https://imgur.com/WAV1jAI" + "\n" + "Gato");
         this.patchs.put("5.7", "https://imgur.com/4Tjdvpq" + "\n" + "https://imgur.com/HSPj47q" + "\n" + "Eden");
         this.patchs.put("5.8", "https://imgur.com/QwqTkvq" + "\n" + "https://imgur.com/JInQmZo" + "\n" + "Painto Girl");
-        this.patchs.put("5.9", "https://imgur.com/SG117Xd" + "\n" + "https://imgur.com/6oAt3IS" + "\n" + "Vill-V");
+        this.patchs.put("5.9", "https://imgur.com/SG117Xd" + "\n" + "https://imgur.com/oBrKiLp" + "\n" + "Vill-V");
+    }
+
+    public void honkaiPatchListener(MessageReceivedEvent event){
+        String maxKeyValueInMap = Collections.max(patchs.keySet());
+        event.getTextChannel().sendMessage(this.patchs.get(maxKeyValueInMap)).queue();
     }
 
     public void honkaiRotation(SlashCommandInteractionEvent event) {
