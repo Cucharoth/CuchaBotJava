@@ -55,7 +55,7 @@ public class IMissFauna {
         }
 
         Elements countDownClass = fauwuna.getElementsByTag("a");
-        if(!countDownClass.text().equalsIgnoreCase("")) {
+        if(!fauwuna.getElementsByClass("miss-her").text().equalsIgnoreCase("")) {
             this.countDown = countDownClass.get(0).text();
             Element image = fauwuna.select("img").first();
             assert image != null;
@@ -64,7 +64,6 @@ public class IMissFauna {
             Elements image = fauwuna.select("img");
             this.imageURL = image.get(1).attr("src");
             this.currentStream = true;
-
         }
     }
 
